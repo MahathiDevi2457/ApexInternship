@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio</title>
+    <style>
+        :root {
+            --bg: #080c12;
+            --surface: #0f1520;
+            --border: #1e2a3a;
+            --accent: #4f9eff;
+            --accent2: #a78bfa;
+            --text: #e2eaf4;
+            --muted: #6b7e99;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, 0.25) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 60%, rgba(255, 255, 255, 0.15) 0%, transparent 100%),
+                radial-gradient(1px 1px at 55% 15%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 80%, rgba(255, 255, 255, 0.18) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 35%, rgba(255, 255, 255, 0.22) 0%, transparent 100%),
+                radial-gradient(1px 1px at 20% 85%, rgba(255, 255, 255, 0.1) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 10%, rgba(255, 255, 255, 0.18) 0%, transparent 100%),
+                radial-gradient(1px 1px at 45% 50%, rgba(255, 255, 255, 0.12) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 40%, rgba(255, 255, 255, 0.14) 0%, transparent 100%),
+                radial-gradient(1px 1px at 5% 50%, rgba(255, 255, 255, 0.16) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 3rem;
+            background: rgba(8, 12, 18, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4f9eff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--text);
+        }
+
+        section {
+            position: relative;
+            z-index: 1;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            color: #fff;
+        }
+
+        #about {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding-top: 7rem;
+        }
+
+        .avatar-ring {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(135deg, #4f9eff, #a78bfa);
+            margin-bottom: 1.8rem;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .avatar-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .avatar-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        #about h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-role {
+            font-size: 1rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            letter-spacing: 0.04em;
+        }
+
+        #about p {
+            font-size: 1rem;
+            color: var(--muted);
+            max-width: 480px;
+            line-height: 1.8;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .skill-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.4rem 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.65rem;
+            transition: border-color 0.25s, transform 0.25s;
+            cursor: default;
+        }
+
+        .skill-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .skill-card img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .skill-card span {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--muted);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.8rem;
+            transition: border-color 0.25s, transform 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .project-card:hover {
+            border-color: #2e3f58;
+            transform: translateY(-5px);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-emoji {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .project-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-card p {
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .tag {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.2rem 0.65rem;
+            border-radius: 999px;
+            background: rgba(79, 158, 255, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(79, 158, 255, 0.2);
+        }
+
+        #contact {
+            text-align: center;
+        }
+
+        #contact p {
+            color: var(--muted);
+            font-size: 1rem;
+            max-width: 400px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .contact-link {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #4f9eff22, #a78bfa22);
+            border: 1px solid #4f9eff55;
+            border-radius: 999px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: background 0.25s, transform 0.2s;
+        }
+
+        .contact-link:hover {
+            background: linear-gradient(135deg, #4f9eff44, #a78bfa44);
+            transform: scale(1.04);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 1rem 1.2rem;
+            }
+
+            nav ul {
+                gap: 1.2rem;
+            }
+
+            #about h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            section {
+                padding: 4rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <span class="logo">Portfolio</span>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="about">
+        <div class="avatar-ring">
+            <div class="avatar-inner"><img
+                    src="https://img.magnific.com/premium-vector/smiling-woman-avatar_937492-6135.jpg?semt=ais_hybrid&w=740&q=80">
+            </div>
+        </div>
+        <p class="hero-role">Web Developer · Learner · Builder</p>
+        <h1>Hi, I'm Mahathi </h1>
+        <p>I'm learning web development by building real projects. I enjoy turning ideas into interactive experiences
+            using HTML, CSS, and JavaScript.</p>
+    </section>
+
+    <section id="skills">
+        <div class="fade-in">
+            <p class="section-label">What I work with</p>
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"
+                        alt="HTML5" />
+                    <span>HTML</span>
+                </div>
+                <div class="skill-card">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" />
+                    <span>CSS</span>
+                </div>
+                <div class="skill-card">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                        alt="JavaScript" />
+                    <span>JavaScript</span>
+                </div>
+                <div class="skill-card">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" />
+                    <span>Git</span>
+                </div>
+                <div class="skill-card">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg"
+                        alt="VS Code" />
+                    <span>VS Code</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="fade-in">
+            <p class="section-label">Things I've built</p>
+            <h2>Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <span class="project-emoji">✅</span>
+                    <h3>To-Do List</h3>
+                    <p>A task manager where you can add, complete, and delete to-dos. Built to learn DOM manipulation
+                        and event listeners in JavaScript.</p>
+                    <div class="project-tags">
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
+                        <span class="tag">JavaScript</span>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <span class="project-emoji">🎯</span>
+                    <h3>Catch the Box</h3>
+                    <p>A fun reaction-speed game where you click a moving box before it disappears. Taught me timers,
+                        random positioning, and game logic.</p>
+                    <div class="project-tags">
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
+                        <span class="tag">JavaScript</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="fade-in">
+            <p class="section-label">Say hello</p>
+            <h2>Contact</h2>
+            <p>Want to connect, collaborate, or just talk about something you're building? I'd love to hear from you.
+            </p>
+            <a href="mailto:you@email.com" class="contact-link">xxxxxxx@email.com</a>
+        </div>
+    </section>
+    <script>
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+    </script>
+
+</body>
+
+</html>
