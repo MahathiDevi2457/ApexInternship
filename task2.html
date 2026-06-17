@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>task2</title>
+  <style>
+    * { 
+        margin: 0; 
+        padding: 0; 
+        box-sizing: border-box; 
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #1a1a2e;
+      color: #222;
+      min-height: 100vh;
+    }
+
+    nav {
+      background: #1a1a2e;
+      padding: 14px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav .logo {
+      color: #1c1cfa;
+      background: linear-gradient(135deg, #4f9eff, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+    }
+
+    nav ul a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    nav ul a:hover { 
+        color: #1c1cfa; 
+    }
+
+    .page-header {
+      background: #1a1a2e;
+      color: #fff;
+      text-align: center;
+      padding: 50px 20px 40px;
+    }
+
+    .page-header h1 { 
+        font-size: 1.9rem; 
+        margin-bottom: 8px; 
+    }
+    .page-header p  { 
+        color: #aaa; 
+        font-size: 0.95rem; 
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 1000px;
+      margin: 36px auto;
+      padding: 0 20px;
+    }
+
+    @media (max-width: 680px) {
+      .main { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: #b5b5ff;
+      border-radius: 10px;
+      padding: 26px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      color: #1a1a2e;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #2b0a87;
+    }
+
+    .form-group { 
+        margin-bottom: 14px; 
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-family: Arial, sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus { 
+        border-color: #2b0a87; 
+    }
+
+    .form-group textarea { 
+        height: 90px; 
+        resize: vertical; 
+    }
+
+    .err {
+      font-size: 0.75rem;
+      color: #e74c3c;
+      margin-top: 3px;
+      display: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 10px;
+      background: #3d3da3;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.92rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 4px;
+    }
+
+    .submit-btn:hover { 
+        background: #2b0a87; 
+    }
+
+    .success {
+      display: none;
+      background: #d4edda;
+      color: #155724;
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      margin-top: 12px;
+    }
+
+    .todo-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .todo-row input {
+      flex: 1;
+      padding: 9px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      outline: none;
+      font-family: Arial, sans-serif;
+    }
+
+    .todo-row input:focus { 
+        border-color: #2b0a87; 
+    }
+
+    .add-btn {
+      padding: 9px 16px;
+      background: #3d3da3;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .add-btn:hover { 
+        background: #2b0a87; 
+    }
+
+    #todo-list { 
+        list-style: none; 
+    }
+    #todo-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      background: #fafafa;
+    }
+
+    #todo-list li.done span {
+      text-decoration: line-through;
+      color: #aaa;
+    }
+
+    #todo-list li span { 
+        flex: 1; 
+    }
+
+    .btn-done {
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 3px 9px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .btn-done:hover { 
+        background: #1e8449; 
+    }
+
+    .btn-del {
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 3px 9px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .btn-del:hover { 
+        background: #c0392b; 
+    }
+
+    .empty-msg {
+      text-align: center;
+      color: #ccc;
+      font-size: 0.85rem;
+      padding: 18px 0;
+    }
+    footer {
+      text-align: center;
+      padding: 22px;
+      font-size: 0.8rem;
+      color: #999;
+      border-top: 1px solid #ddd;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="logo">MyApp</div>
+  <ul>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#todo">To-Do</a></li>
+  </ul>
+</nav>
+<div class="page-header">
+  <h1>Stay Connected & Organized</h1>
+  <p>Send us a message or manage your daily tasks — all in one place.</p>
+</div>
+<div class="main">
+  <div class="card" id="contact">
+    <h2>📬 Contact Us</h2>
+    <div class="form-group">
+      <label>Full Name *</label>
+      <input type="text" id="name" placeholder="Your name"/>
+      <div class="err" id="name-err">Name is required.</div>
+    </div>
+    <div class="form-group">
+      <label>Email Address *</label>
+      <input type="email" id="email" placeholder="you@example.com"/>
+      <div class="err" id="email-err">Enter a valid email address.</div>
+    </div>
+    <div class="form-group">
+      <label>Phone (optional)</label>
+      <input type="text" id="phone" placeholder="+91 9876543210"/>
+    </div>
+    <div class="form-group">
+      <label>Message *</label>
+      <textarea id="message" placeholder="Write your message..."></textarea>
+      <div class="err" id="msg-err">Message cannot be empty.</div>
+    </div>
+    <button class="submit-btn" onclick="submitForm()">Send Message</button>
+    <div class="success" id="success">✅ Message sent! We'll get back to you soon.</div>
+  </div>
+  <div class="card" id="todo">
+    <h2>✅ To-Do List</h2>
+    <div class="todo-row">
+      <input type="text" id="task-input" placeholder="Add a new task..." onkeydown="if(event.key==='Enter') addTask()"/>
+      <button class="add-btn" onclick="addTask()">+ Add</button>
+    </div>
+    <ul id="todo-list">
+      <li class="empty-msg" id="empty-msg">No tasks yet. Add one above!</li>
+    </ul>
+  </div>
+</div>
+<script>
+  function submitForm() {
+    let valid = true;
+    const name = document.getElementById('name').value.trim();
+    const nameErr = document.getElementById('name-err');
+    nameErr.style.display = name ? 'none' : 'block';
+    if (!name) valid = false;
+    const email = document.getElementById('email').value.trim();
+    const emailErr = document.getElementById('email-err');
+    const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    emailErr.style.display = validEmail ? 'none' : 'block';
+    if (!validEmail) valid = false;
+    const message = document.getElementById('message').value.trim();
+    const msgErr = document.getElementById('msg-err');
+    msgErr.style.display = message ? 'none' : 'block';
+    if (!message) valid = false;
+    if (valid) {
+      document.getElementById('success').style.display = 'block';
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('phone').value = '';
+      document.getElementById('message').value = '';
+      setTimeout(() => document.getElementById('success').style.display = 'none', 4000);
+    }
+  }
+  function addTask() {
+    const input = document.getElementById('task-input');
+    const text = input.value.trim();
+    if (!text) return;
+    document.getElementById('empty-msg').style.display = 'none';
+    const li = document.createElement('li');
+    const span = document.createElement('span');
+    span.textContent = text;
+    const doneBtn = document.createElement('button');
+    doneBtn.className = 'btn-done';
+    doneBtn.textContent = '✓';
+    doneBtn.onclick = () => li.classList.toggle('done');
+    const delBtn = document.createElement('button');
+    delBtn.className = 'btn-del';
+    delBtn.textContent = '✕';
+    delBtn.onclick = () => {
+      li.remove();
+      const remaining = document.querySelectorAll('#todo-list li:not(#empty-msg)').length;
+      if (remaining === 0) document.getElementById('empty-msg').style.display = 'block';
+    };
+    li.appendChild(span);
+    li.appendChild(doneBtn);
+    li.appendChild(delBtn);
+    document.getElementById('todo-list').appendChild(li);
+    input.value = '';
+    input.focus();
+  }
+</script>
+</body>
+</html>
