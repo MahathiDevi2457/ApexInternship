@@ -1,525 +1,596 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Web Dev Quiz</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Dev Quiz</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    :root {
-      --bg: #f0f4ff;
-      --purple: #6c47ff;
-      --pink: #ff4fcf;
-      --yellow: #ffe234;
-      --green: #00d97e;
-      --red: #ff4757;
-      --text: #1a1040;
-      --muted: #7b6fa0;
-      --card: #ffffff;
-    }
+        :root {
+            --bg: #f0f4ff;
+            --purple: #6c47ff;
+            --pink: #ff4fcf;
+            --yellow: #ffe234;
+            --green: #00d97e;
+            --red: #ff4757;
+            --text: #1a1040;
+            --muted: #7b6fa0;
+            --card: #ffffff;
+        }
 
-    body {
-      font-family: 'Nunito Sans', sans-serif;
-      background: var(--bg);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
-      background-image: radial-gradient(circle at 15% 20%, rgba(108,71,255,0.08) 0%, transparent 40%),
-                        radial-gradient(circle at 85% 80%, rgba(255,79,207,0.08) 0%, transparent 40%);
-    }
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            background-image: radial-gradient(circle at 15% 20%, rgba(108, 71, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(255, 79, 207, 0.08) 0%, transparent 40%);
+        }
 
-    .container {
-      width: 100%;
-      max-width: 520px;
-    }
+        .container {
+            width: 100%;
+            max-width: 520px;
+        }
 
-    /* ── Screens ── */
-    .screen { display: none; }
-    .screen.active { display: block; }
+        .screen {
+            display: none;
+        }
 
-    /* ── Start Screen ── */
-    .start-card {
-      background: var(--card);
-      border-radius: 24px;
-      padding: 2.5rem 2rem;
-      text-align: center;
-      box-shadow: 0 8px 40px rgba(108,71,255,0.12);
-      border: 3px solid var(--purple);
-    }
+        .screen.active {
+            display: block;
+        }
 
-    .trophy { font-size: 4rem; margin-bottom: 1rem; animation: bounce 1.5s infinite; }
-    @keyframes bounce {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
+        .start-card {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(108, 71, 255, 0.12);
+            border: 3px solid var(--purple);
+        }
 
-    .start-card h1 {
-      font-family: 'Nunito', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 900;
-      color: var(--text);
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-    }
+        .trophy {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 1.5s infinite;
+        }
 
-    .start-card h1 em {
-      font-style: normal;
-      color: var(--purple);
-    }
+        @keyframes bounce {
 
-    .start-card p {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 2rem;
-      line-height: 1.6;
-    }
+            0%,
+            100% {
+                transform: translateY(0);
+            }
 
-    .badge-row {
-      display: flex;
-      justify-content: center;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-      margin-bottom: 2rem;
-    }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
 
-    .badge {
-      background: #f0f4ff;
-      border: 2px solid #ddd6ff;
-      border-radius: 20px;
-      padding: 0.3rem 0.9rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--purple);
-    }
+        .start-card h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
 
-    /* ── Quiz Screen ── */
-    .progress-bar-wrap {
-      background: #e0d9ff;
-      border-radius: 99px;
-      height: 8px;
-      margin-bottom: 1.5rem;
-      overflow: hidden;
-    }
+        .start-card h1 em {
+            font-style: normal;
+            color: var(--purple);
+        }
 
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--purple), var(--pink));
-      border-radius: 99px;
-      transition: width 0.4s ease;
-    }
+        .start-card p {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
 
-    .q-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.2rem;
-    }
+        .badge-row {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
 
-    .q-num {
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: var(--purple);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
+        .badge {
+            background: #f0f4ff;
+            border: 2px solid #ddd6ff;
+            border-radius: 20px;
+            padding: 0.3rem 0.9rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--purple);
+        }
 
-    .score-pill {
-      background: var(--yellow);
-      color: var(--text);
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 900;
-      padding: 0.25rem 0.9rem;
-      border-radius: 99px;
-    }
+        .progress-bar-wrap {
+            background: #e0d9ff;
+            border-radius: 99px;
+            height: 8px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
 
-    .q-card {
-      background: var(--card);
-      border-radius: 20px;
-      padding: 2rem 1.75rem;
-      box-shadow: 0 4px 24px rgba(108,71,255,0.09);
-      margin-bottom: 1rem;
-    }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--purple), var(--pink));
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
 
-    .q-text {
-      font-family: 'Nunito', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--text);
-      line-height: 1.4;
-      margin-bottom: 1.5rem;
-    }
+        .q-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
 
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-    }
+        .q-num {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--purple);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
 
-    .option {
-      background: #f8f6ff;
-      border: 2.5px solid #e0d9ff;
-      border-radius: 14px;
-      padding: 0.85rem 1.1rem;
-      font-family: 'Nunito Sans', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-    }
+        .score-pill {
+            background: var(--yellow);
+            color: var(--text);
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 900;
+            padding: 0.25rem 0.9rem;
+            border-radius: 99px;
+        }
 
-    .option:hover:not(:disabled) {
-      border-color: var(--purple);
-      background: #ede8ff;
-      transform: translateX(4px);
-    }
+        .q-card {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 2rem 1.75rem;
+            box-shadow: 0 4px 24px rgba(108, 71, 255, 0.09);
+            margin-bottom: 1rem;
+        }
 
-    .option .opt-letter {
-      width: 28px; height: 28px;
-      border-radius: 8px;
-      background: #e0d9ff;
-      color: var(--purple);
-      font-family: 'Nunito', sans-serif;
-      font-weight: 900;
-      font-size: 0.8rem;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.15s;
-    }
+        .q-text {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
+        }
 
-    .option.correct {
-      border-color: var(--green);
-      background: #e6fff4;
-      transform: none;
-    }
-    .option.correct .opt-letter { background: var(--green); color: white; }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
 
-    .option.wrong {
-      border-color: var(--red);
-      background: #fff0f1;
-      transform: none;
-    }
-    .option.wrong .opt-letter { background: var(--red); color: white; }
+        .option {
+            background: #f8f6ff;
+            border: 2.5px solid #e0d9ff;
+            border-radius: 14px;
+            padding: 0.85rem 1.1rem;
+            font-family: 'Nunito Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
 
-    .option:disabled { cursor: default; }
+        .option:hover:not(:disabled) {
+            border-color: var(--purple);
+            background: #ede8ff;
+            transform: translateX(4px);
+        }
 
-    /* Feedback message */
-    .feedback {
-      border-radius: 12px;
-      padding: 0.75rem 1rem;
-      font-weight: 700;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-      display: none;
-      align-items: center;
-      gap: 0.5rem;
-    }
+        .option .opt-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #e0d9ff;
+            color: var(--purple);
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.15s;
+        }
 
-    .feedback.show { display: flex; }
-    .feedback.correct-fb { background: #e6fff4; color: #00a85a; border: 2px solid #00d97e; }
-    .feedback.wrong-fb   { background: #fff0f1; color: #cc1a28; border: 2px solid #ff4757; }
+        .option.correct {
+            border-color: var(--green);
+            background: #e6fff4;
+            transform: none;
+        }
 
-    /* Next btn */
-    .next-btn {
-      width: 100%;
-      background: linear-gradient(135deg, var(--purple), var(--pink));
-      color: white;
-      border: none;
-      border-radius: 14px;
-      padding: 1rem;
-      font-family: 'Nunito', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 900;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
-      display: none;
-      letter-spacing: 0.02em;
-    }
+        .option.correct .opt-letter {
+            background: var(--green);
+            color: white;
+        }
 
-    .next-btn.show { display: block; }
-    .next-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,71,255,0.3); }
+        .option.wrong {
+            border-color: var(--red);
+            background: #fff0f1;
+            transform: none;
+        }
 
-    /* ── Results Screen ── */
-    .result-card {
-      background: var(--card);
-      border-radius: 24px;
-      padding: 2.5rem 2rem;
-      text-align: center;
-      box-shadow: 0 8px 40px rgba(108,71,255,0.12);
-    }
+        .option.wrong .opt-letter {
+            background: var(--red);
+            color: white;
+        }
 
-    .result-emoji { font-size: 4rem; margin-bottom: 1rem; }
+        .option:disabled {
+            cursor: default;
+        }
 
-    .result-card h2 {
-      font-family: 'Nunito', sans-serif;
-      font-size: 1.9rem;
-      font-weight: 900;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-    }
+        .feedback {
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    .result-score {
-      font-family: 'Nunito', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--purple), var(--pink));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin: 0.5rem 0;
-    }
+        .feedback.show {
+            display: flex;
+        }
 
-    .result-label { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .feedback.correct-fb {
+            background: #e6fff4;
+            color: #00a85a;
+            border: 2px solid #00d97e;
+        }
 
-    .stat-row {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
+        .feedback.wrong-fb {
+            background: #fff0f1;
+            color: #cc1a28;
+            border: 2px solid #ff4757;
+        }
 
-    .stat-box {
-      background: #f8f6ff;
-      border: 2px solid #e0d9ff;
-      border-radius: 14px;
-      padding: 0.8rem 1.2rem;
-      text-align: center;
-    }
+        .next-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 1rem;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            display: none;
+            letter-spacing: 0.02em;
+        }
 
-    .stat-box .val {
-      font-family: 'Nunito', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: var(--purple);
-    }
+        .next-btn.show {
+            display: block;
+        }
 
-    .stat-box .lbl { font-size: 0.72rem; color: var(--muted); font-weight: 600; margin-top: 0.1rem; }
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(108, 71, 255, 0.3);
+        }
 
-    .retry-btn {
-      background: linear-gradient(135deg, var(--purple), var(--pink));
-      color: white;
-      border: none;
-      border-radius: 14px;
-      padding: 1rem 2rem;
-      font-family: 'Nunito', sans-serif;
-      font-size: 1rem;
-      font-weight: 900;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
+        .result-card {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 8px 40px rgba(108, 71, 255, 0.12);
+        }
 
-    .retry-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,71,255,0.3); }
+        .result-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
 
-    /* Big start btn */
-    .start-btn {
-      background: linear-gradient(135deg, var(--purple), var(--pink));
-      color: white;
-      border: none;
-      border-radius: 16px;
-      padding: 1.1rem 2.5rem;
-      font-family: 'Nunito', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 900;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
-      width: 100%;
-      letter-spacing: 0.02em;
-    }
+        .result-card h2 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.9rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
 
-    .start-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(108,71,255,0.35); }
+        .result-score {
+            font-family: 'Nunito', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0.5rem 0;
+        }
 
-    @media (max-width: 420px) {
-      .q-text { font-size: 1.05rem; }
-      .start-card h1 { font-size: 1.8rem; }
-    }
-  </style>
+        .result-label {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: #f8f6ff;
+            border: 2px solid #e0d9ff;
+            border-radius: 14px;
+            padding: 0.8rem 1.2rem;
+            text-align: center;
+        }
+
+        .stat-box .val {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--purple);
+        }
+
+        .stat-box .lbl {
+            font-size: 0.72rem;
+            color: var(--muted);
+            font-weight: 600;
+            margin-top: 0.1rem;
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 1rem 2rem;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(108, 71, 255, 0.3);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 1.1rem 2.5rem;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            width: 100%;
+            letter-spacing: 0.02em;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(108, 71, 255, 0.35);
+        }
+
+        @media (max-width: 420px) {
+            .q-text {
+                font-size: 1.05rem;
+            }
+
+            .start-card h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<div class="container">
+    <div class="container">
 
-  <!-- START -->
-  <div class="screen active" id="screen-start">
-    <div class="start-card">
-      <div class="trophy">🧠</div>
-      <h1>How well do you know <em>Web Dev?</em></h1>
-      <p>10 questions on HTML, CSS & JavaScript.<br/>Let's find out if you're a pro or a padawan.</p>
-      <div class="badge-row">
-        <span class="badge">10 Questions</span>
-        <span class="badge">HTML · CSS · JS</span>
-        <span class="badge">Instant Results</span>
-      </div>
-      <button class="start-btn" onclick="startQuiz()">Let's Go! 🚀</button>
-    </div>
-  </div>
-
-  <!-- QUIZ -->
-  <div class="screen" id="screen-quiz">
-    <div class="progress-bar-wrap">
-      <div class="progress-bar" id="progress-bar"></div>
-    </div>
-    <div class="q-meta">
-      <span class="q-num" id="q-num">Question 1 of 10</span>
-      <span class="score-pill">⭐ <span id="live-score">0</span></span>
-    </div>
-    <div class="q-card">
-      <p class="q-text" id="q-text"></p>
-      <div class="options" id="options"></div>
-    </div>
-    <div class="feedback" id="feedback"></div>
-    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
-  </div>
-
-  <!-- RESULTS -->
-  <div class="screen" id="screen-result">
-    <div class="result-card">
-      <div class="result-emoji" id="result-emoji"></div>
-      <h2 id="result-title"></h2>
-      <div class="result-score" id="result-score"></div>
-      <p class="result-label">out of 10 questions</p>
-      <div class="stat-row">
-        <div class="stat-box">
-          <div class="val" id="stat-correct" style="color:#00d97e"></div>
-          <div class="lbl">Correct ✅</div>
+        <div class="screen active" id="screen-start">
+            <div class="start-card">
+                <div class="trophy">🧠</div>
+                <h1>How well do you know <em>Web Dev?</em></h1>
+                <p>10 questions on HTML, CSS & JavaScript.<br />Let's find out if you're a pro or a padawan.</p>
+                <div class="badge-row">
+                    <span class="badge">10 Questions</span>
+                    <span class="badge">HTML · CSS · JS</span>
+                    <span class="badge">Instant Results</span>
+                </div>
+                <button class="start-btn" onclick="startQuiz()">Let's Go! 🚀</button>
+            </div>
         </div>
-        <div class="stat-box">
-          <div class="val" id="stat-wrong" style="color:#ff4757"></div>
-          <div class="lbl">Wrong ❌</div>
+
+        <!-- QUIZ -->
+        <div class="screen" id="screen-quiz">
+            <div class="progress-bar-wrap">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="q-meta">
+                <span class="q-num" id="q-num">Question 1 of 10</span>
+                <span class="score-pill">⭐ <span id="live-score">0</span></span>
+            </div>
+            <div class="q-card">
+                <p class="q-text" id="q-text"></p>
+                <div class="options" id="options"></div>
+            </div>
+            <div class="feedback" id="feedback"></div>
+            <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
         </div>
-        <div class="stat-box">
-          <div class="val" id="stat-pct"></div>
-          <div class="lbl">Score %</div>
+
+        <div class="screen" id="screen-result">
+            <div class="result-card">
+                <div class="result-emoji" id="result-emoji"></div>
+                <h2 id="result-title"></h2>
+                <div class="result-score" id="result-score"></div>
+                <p class="result-label">out of 10 questions</p>
+                <div class="stat-row">
+                    <div class="stat-box">
+                        <div class="val" id="stat-correct" style="color:#00d97e"></div>
+                        <div class="lbl">Correct ✅</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="val" id="stat-wrong" style="color:#ff4757"></div>
+                        <div class="lbl">Wrong ❌</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="val" id="stat-pct"></div>
+                        <div class="lbl">Score %</div>
+                    </div>
+                </div>
+                <button class="retry-btn" onclick="startQuiz()">Play Again 🔄</button>
+            </div>
         </div>
-      </div>
-      <button class="retry-btn" onclick="startQuiz()">Play Again 🔄</button>
+
     </div>
-  </div>
 
-</div>
+    <script>
+        const questions = [
+            { q: "What does HTML stand for?", options: ["Hyper Text Markup Language", "High Tech Modern Language", "Hyper Transfer Markup Language", "Home Tool Markup Language"], answer: 0 },
+            { q: "Which CSS property changes text color?", options: ["font-color", "text-color", "color", "foreground"], answer: 2 },
+            { q: "Which HTML tag creates a hyperlink?", options: ["&lt;link&gt;", "&lt;href&gt;", "&lt;a&gt;", "&lt;url&gt;"], answer: 2 },
+            { q: "In JavaScript, which keyword declares a variable that can't be reassigned?", options: ["var", "let", "const", "fixed"], answer: 2 },
+            { q: "Which CSS property makes an element invisible but still takes up space?", options: ["display: none", "visibility: hidden", "opacity: 0", "hidden: true"], answer: 1 },
+            { q: "What does the 'C' stand for in CSS?", options: ["Computer", "Cascading", "Creative", "Coded"], answer: 1 },
+            { q: "Which method adds an item to the END of a JavaScript array?", options: ["push()", "pop()", "shift()", "append()"], answer: 0 },
+            { q: "Which HTML5 tag is used for navigation links?", options: ["&lt;menu&gt;", "&lt;nav&gt;", "&lt;header&gt;", "&lt;links&gt;"], answer: 1 },
+            { q: "In CSS Flexbox, which property aligns items along the main axis?", options: ["align-items", "justify-content", "flex-direction", "align-content"], answer: 1 },
+            { q: "What does 'DOM' stand for in web development?", options: ["Document Object Model", "Data Object Manager", "Design Output Mode", "Dynamic Object Mapping"], answer: 0 },
+        ];
 
-<script>
-  const questions = [
-    { q: "What does HTML stand for?", options: ["Hyper Text Markup Language","High Tech Modern Language","Hyper Transfer Markup Language","Home Tool Markup Language"], answer: 0 },
-    { q: "Which CSS property changes text color?", options: ["font-color","text-color","color","foreground"], answer: 2 },
-    { q: "Which HTML tag creates a hyperlink?", options: ["&lt;link&gt;", "&lt;href&gt;", "&lt;a&gt;", "&lt;url&gt;"], answer: 2 },
-    { q: "In JavaScript, which keyword declares a variable that can't be reassigned?", options: ["var","let","const","fixed"], answer: 2 },
-    { q: "Which CSS property makes an element invisible but still takes up space?", options: ["display: none","visibility: hidden","opacity: 0","hidden: true"], answer: 1 },
-    { q: "What does the 'C' stand for in CSS?", options: ["Computer","Cascading","Creative","Coded"], answer: 1 },
-    { q: "Which method adds an item to the END of a JavaScript array?", options: ["push()","pop()","shift()","append()"], answer: 0 },
-    { q: "Which HTML5 tag is used for navigation links?", options: ["&lt;menu&gt;", "&lt;nav&gt;", "&lt;header&gt;", "&lt;links&gt;"], answer: 1 },
-    { q: "In CSS Flexbox, which property aligns items along the main axis?", options: ["align-items","justify-content","flex-direction","align-content"], answer: 1 },
-    { q: "What does 'DOM' stand for in web development?", options: ["Document Object Model","Data Object Manager","Design Output Mode","Dynamic Object Mapping"], answer: 0 },
-  ];
+        const letters = ['A', 'B', 'C', 'D'];
+        let current = 0;
+        let score = 0;
+        let answered = false;
 
-  const letters = ['A','B','C','D'];
-  let current = 0;
-  let score = 0;
-  let answered = false;
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
 
-  function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-  }
+        function startQuiz() {
+            current = 0;
+            score = 0;
+            answered = false;
+            document.getElementById('live-score').textContent = 0;
+            showScreen('screen-quiz');
+            loadQuestion();
+        }
 
-  function startQuiz() {
-    current = 0;
-    score = 0;
-    answered = false;
-    document.getElementById('live-score').textContent = 0;
-    showScreen('screen-quiz');
-    loadQuestion();
-  }
+        function loadQuestion() {
+            answered = false;
+            const q = questions[current];
+            const total = questions.length;
 
-  function loadQuestion() {
-    answered = false;
-    const q = questions[current];
-    const total = questions.length;
+            document.getElementById('q-num').textContent = `Question ${current + 1} of ${total}`;
+            document.getElementById('progress-bar').style.width = `${((current) / total) * 100}%`;
+            document.getElementById('q-text').textContent = q.q;
 
-    document.getElementById('q-num').textContent = `Question ${current + 1} of ${total}`;
-    document.getElementById('progress-bar').style.width = `${((current) / total) * 100}%`;
-    document.getElementById('q-text').textContent = q.q;
-
-    const optionsEl = document.getElementById('options');
-    optionsEl.innerHTML = q.options.map((opt, i) => `
+            const optionsEl = document.getElementById('options');
+            optionsEl.innerHTML = q.options.map((opt, i) => `
       <button class="option" onclick="selectAnswer(${i})" id="opt-${i}">
         <span class="opt-letter">${letters[i]}</span>
         ${opt}
       </button>
     `).join('');
 
-    document.getElementById('feedback').className = 'feedback';
-    document.getElementById('feedback').innerHTML = '';
-    document.getElementById('next-btn').className = 'next-btn';
-  }
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('next-btn').className = 'next-btn';
+        }
 
-  function selectAnswer(index) {
-    if (answered) return;
-    answered = true;
+        function selectAnswer(index) {
+            if (answered) return;
+            answered = true;
 
-    const q = questions[current];
-    const isCorrect = index === q.answer;
-    const feedback = document.getElementById('feedback');
+            const q = questions[current];
+            const isCorrect = index === q.answer;
+            const feedback = document.getElementById('feedback');
 
-    // Disable all options
-    document.querySelectorAll('.option').forEach((btn, i) => {
-      btn.disabled = true;
-      if (i === q.answer) btn.classList.add('correct');
-      else if (i === index) btn.classList.add('wrong');
-    });
+            document.querySelectorAll('.option').forEach((btn, i) => {
+                btn.disabled = true;
+                if (i === q.answer) btn.classList.add('correct');
+                else if (i === index) btn.classList.add('wrong');
+            });
 
-    if (isCorrect) {
-      score++;
-      document.getElementById('live-score').textContent = score;
-      feedback.className = 'feedback correct-fb show';
-      feedback.innerHTML = '✅ Nailed it! That\'s correct.';
-    } else {
-      feedback.className = 'feedback wrong-fb show';
-      feedback.innerHTML = `❌ Oops! The answer was <strong>${q.options[q.answer]}</strong>.`;
-    }
+            if (isCorrect) {
+                score++;
+                document.getElementById('live-score').textContent = score;
+                feedback.className = 'feedback correct-fb show';
+                feedback.innerHTML = '✅ Nailed it! That\'s correct.';
+            } else {
+                feedback.className = 'feedback wrong-fb show';
+                feedback.innerHTML = `❌ Oops! The answer was <strong>${q.options[q.answer]}</strong>.`;
+            }
 
-    document.getElementById('next-btn').className = 'next-btn show';
-  }
+            document.getElementById('next-btn').className = 'next-btn show';
+        }
 
-  function nextQuestion() {
-    current++;
-    if (current >= questions.length) {
-      showResults();
-    } else {
-      loadQuestion();
-    }
-  }
+        function nextQuestion() {
+            current++;
+            if (current >= questions.length) {
+                showResults();
+            } else {
+                loadQuestion();
+            }
+        }
 
-  function showResults() {
-    const pct = Math.round((score / questions.length) * 100);
-    const wrong = questions.length - score;
+        function showResults() {
+            const pct = Math.round((score / questions.length) * 100);
+            const wrong = questions.length - score;
 
-    let emoji, title;
-    if (pct === 100) { emoji = '🏆'; title = 'Perfect Score!'; }
-    else if (pct >= 80) { emoji = '🎉'; title = 'Amazing Work!'; }
-    else if (pct >= 60) { emoji = '👍'; title = 'Pretty Good!'; }
-    else if (pct >= 40) { emoji = '📚'; title = 'Keep Studying!'; }
-    else { emoji = '💪'; title = 'You Got This!'; }
+            let emoji, title;
+            if (pct === 100) { emoji = '🏆'; title = 'Perfect Score!'; }
+            else if (pct >= 80) { emoji = '🎉'; title = 'Amazing Work!'; }
+            else if (pct >= 60) { emoji = '👍'; title = 'Pretty Good!'; }
+            else if (pct >= 40) { emoji = '📚'; title = 'Keep Studying!'; }
+            else { emoji = '💪'; title = 'You Got This!'; }
 
-    document.getElementById('result-emoji').textContent = emoji;
-    document.getElementById('result-title').textContent = title;
-    document.getElementById('result-score').textContent = score;
-    document.getElementById('stat-correct').textContent = score;
-    document.getElementById('stat-wrong').textContent = wrong;
-    document.getElementById('stat-pct').textContent = pct + '%';
+            document.getElementById('result-emoji').textContent = emoji;
+            document.getElementById('result-title').textContent = title;
+            document.getElementById('result-score').textContent = score;
+            document.getElementById('stat-correct').textContent = score;
+            document.getElementById('stat-wrong').textContent = wrong;
+            document.getElementById('stat-pct').textContent = pct + '%';
 
-    // Update progress bar to full
-    document.getElementById('progress-bar').style.width = '100%';
+            document.getElementById('progress-bar').style.width = '100%';
 
-    showScreen('screen-result');
-  }
-</script>
+            showScreen('screen-result');
+        }
+    </script>
 </body>
+
 </html>
