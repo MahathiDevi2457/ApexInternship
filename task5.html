@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ledger — A Blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #7c3aed;
+    --purple-dark: #5b21b6;
+    --pink: #ec4899;
+    --yellow: #fbbf24;
+    --ink: #3b0764;
+    --muted: #8b7aa8;
+    --card-bg: #ffffff;
+    --page-bg: #faf7ff;
+    --border: #f0e6ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--page-bg);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 3rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .logo span { color: var(--pink); }
+
+  .nav-tagline {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  main {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+
+  .feed-hero {
+    margin-bottom: 2.8rem;
+  }
+
+  .feed-hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+  }
+
+  .feed-hero p {
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 600;
+    max-width: 520px;
+  }
+
+  .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2.6rem;
+  }
+
+  .chip {
+    font-size: 0.82rem;
+    font-weight: 800;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--purple);
+    border: 2px solid var(--border);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .chip:hover { border-color: var(--purple); }
+
+  .chip.active {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: #fff;
+    border-color: transparent;
+  }
+
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.6rem;
+  }
+
+  .post-card {
+    display: block;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: transform 0.22s, box-shadow 0.22s;
+  }
+
+  .post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 28px rgba(124, 58, 237, 0.14);
+  }
+
+  .post-card .cat-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 0.7rem;
+  }
+
+  .post-card h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+  }
+
+  .post-card p {
+    font-size: 0.87rem;
+    color: var(--muted);
+    line-height: 1.65;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-weight: 700;
+    border-top: 1px solid var(--border);
+    padding-top: 0.8rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--purple);
+    text-decoration: none;
+    margin-bottom: 2rem;
+    cursor: pointer;
+  }
+
+  .back-link:hover { color: var(--purple-dark); }
+
+  article .cat-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 0.8rem;
+  }
+
+  article h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 2.3rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .article-meta {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 2.2rem;
+    padding-bottom: 1.8rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  article .body p {
+    font-size: 1.02rem;
+    line-height: 1.85;
+    color: #4c1d5c;
+    margin-bottom: 1.3rem;
+    font-weight: 500;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 700;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.2rem; }
+    main { padding: 2.2rem 1.2rem 4rem; }
+    .feed-hero h1 { font-size: 2rem; }
+    article h1 { font-size: 1.7rem; }
+  }
+</style>
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="#/" onclick="navigateHome()">Blog<span>.</span></a>
+    <span class="nav-tagline">Notes on building, learning &amp; life</span>
+  </nav>
+
+  <main id="app"></main>
+
+
+<script>
+  const posts = [
+    {
+      id: "why-i-learn-by-building",
+      title: "Why I Learn By Building, Not Reading",
+      category: "Learning",
+      date: "June 2, 2026",
+      readTime: "4 min read",
+      excerpt: "Tutorials taught me syntax. Broken projects taught me how things actually work.",
+      body: [
+        "For a long time I thought learning to code meant finishing courses. I'd watch a video, nod along, and feel like I understood something — until I sat down to build it myself and realized I didn't.",
+        "What actually changed things was flipping the order: build first, get stuck, then go look up exactly what I needed to unstick myself. The friction of a real bug teaches you more in ten minutes than a smooth tutorial teaches you in an hour, because you're forced to actually reason about what the code is doing instead of just typing along.",
+        "This is also why small, finishable projects work so well early on. A to-do list or a quiz app isn't impressive on its own, but it forces you through the full cycle: plan, build, break, fix, ship. Do that cycle enough times and the fundamentals stop being abstract rules and start being muscle memory.",
+        "I still read documentation and watch the occasional tutorial. But now it's in service of a project I already care about finishing, not the other way around."
+      ]
+    },
+    {
+      id: "state-of-frontend-2026",
+      title: "The Quiet Comeback of Vanilla JavaScript",
+      category: "Tech",
+      date: "May 21, 2026",
+      readTime: "5 min read",
+      excerpt: "Frameworks solve real problems, but for a lot of small projects, plain JS is still the fastest path from idea to working page.",
+      body: [
+        "It's easy to feel like you need a framework the moment you want to build anything interactive on the web. But a huge share of small tools, dashboards, and prototypes don't actually need one.",
+        "Vanilla JavaScript has quietly gotten more pleasant to write. Native features like fetch, the DOM API, CSS Grid, and localStorage cover most of what a framework used to be reached for, especially in projects under a few thousand lines.",
+        "There's also a learning argument here. Frameworks abstract away the DOM, state updates, and rendering — which is great once you understand what's being abstracted, and confusing if you don't. Spending real time in plain JS first makes every framework you learn afterward click faster, because you already know what problem it's solving.",
+        "None of this is an argument against frameworks for large apps. It's an argument for not reaching for one by default, especially while you're still building intuition for how the browser actually works."
+      ]
+    },
+    {
+      id: "designing-for-yourself",
+      title: "Designing a Project When You're the Only User",
+      category: "Design",
+      date: "May 9, 2026",
+      readTime: "3 min read",
+      excerpt: "Personal projects don't need user research. They need you to actually enjoy looking at them.",
+      body: [
+        "Most design advice assumes you're designing for someone else — a client, a customer, a stakeholder. Personal projects flip that. You're the audience, which is both freeing and a little disorienting.",
+        "The trap is defaulting to whatever looks 'professional,' which usually means bland: a dark theme, one accent color, a lot of gray. It's safe, but it doesn't feel like anything.",
+        "The fix I've found is picking a palette and type pairing early and committing to it everywhere — every project, every card, every button — so the work starts to feel like it belongs to you specifically, not like a template. It doesn't have to be complicated. A distinct color combination and a consistent font pairing does most of the work.",
+        "The bar for a personal project isn't 'would a stranger approve of this.' It's 'do I want to open this again tomorrow.'"
+      ]
+    },
+    {
+      id: "small-bugs-big-lessons",
+      title: "The Bug That Was One Word Long",
+      category: "Learning",
+      date: "April 28, 2026",
+      readTime: "3 min read",
+      excerpt: "A single mistyped CSS value taught me more about debugging discipline than any of the code that worked on the first try.",
+      body: [
+        "I once spent close to an hour convinced a game's ending screen was broken. The click handler worked, the timer worked, the score updated correctly. But the 'Game Over' message just never appeared.",
+        "The actual bug was a single line: `element.style.display = 'black'` instead of `'block'`. CSS silently ignores invalid values, so there was no error, no warning, nothing in the console — just a screen that quietly refused to show up.",
+        "What stuck with me wasn't the fix, it was the debugging process. I'd been reading the working parts of the code over and over, assuming the bug had to be somewhere complicated. It wasn't. It was in the one line I'd glanced past every time because it looked fine at a glance.",
+        "Now, when something isn't working and the logic all looks right, the first thing I do is stop trusting my eyes and start checking values directly — console.log everything that's supposed to change, even the boring stuff."
+      ]
+    },
+    {
+      id: "slow-mornings",
+      title: "In Defense of Slow Mornings Before Deep Work",
+      category: "Life",
+      date: "April 14, 2026",
+      readTime: "3 min read",
+      excerpt: "The best coding sessions I have almost never start immediately at the keyboard.",
+      body: [
+        "There's a version of productivity advice that says to open your laptop the second you wake up and get straight into deep work before the day can distract you. I tried this for a while. It mostly produced code I had to rewrite later.",
+        "What works better for me is a slower on-ramp: tea, a walk, sometimes just sitting with the problem in my head before touching a keyboard. Half the bugs I solve fastest are ones I've already half-solved in that quiet window, without realizing it.",
+        "This isn't really about mornings specifically. It's about giving your brain unstructured time to actually think about a problem instead of just reacting to it, which is hard to do once you're staring at an editor and a blinking cursor.",
+        "The work still gets done. It just doesn't start the second the alarm goes off, and I've stopped feeling like that's a failure."
+      ]
+    },
+    {
+      id: "reading-other-peoples-code",
+      title: "What Reading Other People's Code Actually Teaches You",
+      category: "Tech",
+      date: "March 30, 2026",
+      readTime: "4 min read",
+      excerpt: "Writing code teaches you syntax. Reading it teaches you judgment.",
+      body: [
+        "Early on, almost all of my learning came from writing code — following a tutorial, typing along, building something from scratch. It took a while before I started deliberately reading other people's code, and it changed how I think about writing my own.",
+        "Reading someone else's project surfaces decisions you don't usually think about when you're the one writing it: how they name things, where they draw the line between one function and two, when they reach for a helper versus inlining logic. None of these are right or wrong in isolation, but seeing different answers makes you more intentional about your own.",
+        "It also recalibrates what 'good code' even means. It's easy to assume experienced developers write code that looks nothing like yours. Often it looks surprisingly similar — just with a few more considered decisions and a lot fewer surprises.",
+        "You don't need someone else's repository for this. Going back to your own project from two months ago works almost as well, since past-you is basically a stranger too."
+      ]
+    },
+    {
+      id: "shipping-imperfect-things",
+      title: "Shipping the Imperfect Version",
+      category: "Life",
+      date: "March 12, 2026",
+      readTime: "3 min read",
+      excerpt: "The project that taught me the most wasn't the one I polished — it was the one I finished.",
+      body: [
+        "I have a folder of half-built projects that were supposed to be 'done right.' Better folder structure, cleaner functions, more features, before I'd let myself call them finished. Almost none of them are finished.",
+        "The projects that actually taught me something were the ones I shipped rough: a to-do list with a slightly clunky UI, a game with a bug I found and fixed after the fact, a portfolio I've since redesigned twice. Finishing forced me through parts of the process — testing, fixing edge cases, actually using the thing — that endless polishing never does.",
+        "Perfectionism, in personal projects, is often just fear of finding out the thing isn't as good as you hoped. Shipping it anyway is the fastest way to find out it's usually fine, and to learn exactly what to improve next time instead of guessing.",
+        "The unfinished folder still exists. But it's a lot smaller than it used to be."
+      ]
+    }
+  ];
+
+  const app = document.getElementById('app');
+  let activeCategory = 'All';
+
+  function categories() {
+    return ['All', ...new Set(posts.map(p => p.category))];
+  }
+
+  function renderHome() {
+    const cats = categories();
+    const filtered = activeCategory === 'All'
+      ? posts
+      : posts.filter(p => p.category === activeCategory);
+
+    const chips = cats.map(c => `
+      <button class="chip ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">${c}</button>
+    `).join('');
+
+    const cards = filtered.length ? filtered.map(p => `
+      <a class="post-card" href="#/post/${p.id}">
+        <span class="cat-tag">${p.category}</span>
+        <h2>${p.title}</h2>
+        <p>${p.excerpt}</p>
+        <div class="post-meta">
+          <span>${p.date}</span>
+          <span>${p.readTime}</span>
+        </div>
+      </a>
+    `).join('') : `<div class="empty-state">No posts in this category yet.</div>`;
+
+    app.innerHTML = `
+      <div class="feed-hero">
+        <h1>Notes on building, learning, and figuring things out.</h1>
+        <p>A general-purpose blog — tech, design, and the occasional detour into everyday life.</p>
+      </div>
+      <div class="chip-row">${chips}</div>
+      <div class="post-grid">${cards}</div>
+    `;
+  }
+
+  function renderPost(id) {
+    const post = posts.find(p => p.id === id);
+    if (!post) {
+      app.innerHTML = `<div class="empty-state">Post not found. <a href="#/" onclick="navigateHome()">Go back home</a></div>`;
+      return;
+    }
+    app.innerHTML = `
+      <a class="back-link" href="#/" onclick="navigateHome()">← All posts</a>
+      <article>
+        <span class="cat-tag">${post.category}</span>
+        <h1>${post.title}</h1>
+        <div class="article-meta">${post.date} · ${post.readTime}</div>
+        <div class="body">
+          ${post.body.map(p => `<p>${p}</p>`).join('')}
+        </div>
+      </article>
+    `;
+    window.scrollTo(0, 0);
+  }
+
+  function setCategory(cat) {
+    activeCategory = cat;
+    renderHome();
+  }
+
+  function navigateHome() {
+    activeCategory = 'All';
+  }
+
+  function router() {
+    const hash = window.location.hash;
+    if (hash.startsWith('#/post/')) {
+      renderPost(hash.replace('#/post/', ''));
+    } else {
+      renderHome();
+    }
+  }
+
+  window.addEventListener('hashchange', router);
+  window.addEventListener('DOMContentLoaded', router);
+</script>
+
+</body>
+</html>
